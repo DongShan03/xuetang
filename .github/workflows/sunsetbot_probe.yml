@@ -1,0 +1,123 @@
+name: SunsetBot Haidian Data Proxy
+
+on:
+  schedule:
+    # Beijing time 08:50 and 20:50
+    - cron: '50 0,12 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Query SunsetBot detailed API
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import random
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          import requests
+
+          base = 'https://sunsetbot.top/detailed/'
+          headers = {
+              'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126 Safari/537.36',
+              'Referer': 'https://sunsetbot.top/detailed/',
+              'X-Requested-With': 'XMLHttpRequest',
+              'Accept': '*/*',
+          }
+
+          now_bjt = datetime.now(ZoneInfo('Asia/Shanghai'))
+          event = 'set_2' if now_bjt.hour >= 18 else 'set_1'
+          event_label = '明天日落' if event == 'set_2' else '今天日落'
+          output = {
+              'ok': False,
+              'generated_at_bjt': now_bjt.isoformat(timespec='seconds'),
+              'event_code': event,
+              'event_label': event_label,
+              'source': 'sunsetbot.top/detailed/',
+          }
+
+          try:
+              city_qid = str(random.randint(1, 9_999_999))
+              response = requests.get(
+                  base,
+                  params={
+                      'query_id': city_qid,
+                      'intend': 'change_city',
+                      'city_name_incomplete': '海淀',
+                  },
+                  headers=headers,
+                  timeout=30,
+              )
+              response.raise_for_status()
+              city_data = response.json()
+              matches = [
+                  item for item in city_data.get('city_list', [])
+                  if '北京' in item and '海淀区' in item
+              ]
+              if len(matches) != 1:
+                  raise RuntimeError(f'Unexpected Haidian matches: {matches!r}')
+
+              city = matches[0]
+              output['city'] = city
+              output['city_lookup_query_id'] = city_qid
+              output['models'] = {}
+
+              for model in ('GFS', 'EC'):
+                  query_id = str(random.randint(1, 9_999_999))
+                  response = requests.get(
+                      base,
+                      params={
+                          'query_id': query_id,
+                          'intend': 'select_city',
+                          'query_city': city,
+                          'model': model,
+                          'event_date': 'None',
+                          'event': event,
+                          'times': 'None',
+                      },
+                      headers=headers,
+                      timeout=30,
+                  )
+                  response.raise_for_status()
+                  data = response.json()
+                  output['models'][model] = {
+                      'query_id': data.get('query_id'),
+                      'status': data.get('status'),
+                      'display_city_name': data.get('display_city_name'),
+                      'display_event_name_cn': data.get('display_event_name_cn'),
+                      'display_model': data.get('display_model'),
+                      'display_times_name': data.get('display_times_name'),
+                      'display_times_str': data.get('display_times_str'),
+                      'tb_event_time': data.get('tb_event_time'),
+                      'tb_quality': data.get('tb_quality'),
+                      'tb_aod': data.get('tb_aod'),
+                      'local_quality': data.get('local_quality'),
+                      'local_aod': data.get('local_aod'),
+                      'quality_des': data.get('quality_des'),
+                      'aod_des': data.get('aod_des'),
+                      'img_href': data.get('img_href'),
+                  }
+
+              output['ok'] = True
+          except Exception as exc:
+              output['error'] = repr(exc)
+
+          with open('sunsetbot_probe_result.json', 'w', encoding='utf-8') as file:
+              json.dump(output, file, ensure_ascii=False, indent=2)
+          PY
+      - name: Commit refreshed result
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add sunsetbot_probe_result.json
+          git commit -m 'Refresh SunsetBot Haidian forecast' || exit 0
+          git push
