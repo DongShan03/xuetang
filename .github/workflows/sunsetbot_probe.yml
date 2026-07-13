@@ -1,0 +1,69 @@
+name: SunsetBot Probe
+
+on:
+  push:
+    paths:
+      - '.github/workflows/sunsetbot_probe.yml'
+      - 'sunsetbot_probe_trigger.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Query SunsetBot
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, requests, urllib.parse
+          base='https://sunsetbot.top/detailed/'
+          headers={
+              'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126 Safari/537.36',
+              'Referer':'https://sunsetbot.top/detailed/',
+              'X-Requested-With':'XMLHttpRequest',
+              'Accept':'*/*',
+          }
+          out={'ok':False,'stage':'init'}
+          try:
+              r=requests.get(base,params={'query_id':'991001','intend':'change_city','city_name_incomplete':'海淀'},headers=headers,timeout=30)
+              out['city_http']=r.status_code
+              out['city_content_type']=r.headers.get('content-type')
+              city_data=r.json()
+              out['city_raw']=city_data
+              matches=[x for x in city_data.get('city_list',[]) if '北京' in x and '海淀区' in x]
+              if len(matches)!=1:
+                  raise RuntimeError(f'city match count={len(matches)} matches={matches}')
+              city=matches[0]
+              out['city']=city
+              results={}
+              for model,qid in [('GFS','991002'),('EC','991003')]:
+                  r=requests.get(base,params={
+                      'query_id':qid,'intend':'select_city','query_city':city,'model':model,
+                      'event_date':'None','event':'set_2','times':'None'
+                  },headers=headers,timeout=30)
+                  results[model]={'http':r.status_code,'content_type':r.headers.get('content-type')}
+                  try:
+                      results[model]['data']=r.json()
+                  except Exception:
+                      results[model]['text']=r.text[:2000]
+              out['results']=results
+              out['ok']=True
+              out['stage']='done'
+          except Exception as e:
+              out['stage']='error'
+              out['error']=repr(e)
+          with open('sunsetbot_probe_result.json','w',encoding='utf-8') as f:
+              json.dump(out,f,ensure_ascii=False,indent=2)
+          PY
+      - name: Commit result
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add sunsetbot_probe_result.json
+          git commit -m 'Add SunsetBot probe result' || exit 0
+          git push
