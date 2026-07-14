@@ -1,15 +1,15 @@
 {
   "ok": true,
-  "generated_at_bjt": "2026-07-14T09:00:44+08:00",
+  "generated_at_bjt": "2026-07-14T11:48:36+08:00",
   "event_code": "set_1",
   "event_label": "今天日落",
   "target_date": "2026-07-14",
   "source": "sunsetbot.top/detailed/",
   "city": "北京-海淀区",
-  "city_lookup_query_id": "2955656",
+  "city_lookup_query_id": "6838223",
   "models": {
     "GFS": {
-      "query_id": "4885924",
+      "query_id": "2403563",
       "status": "ok",
       "display_city_name": "北京-海淀区",
       "display_event_name_cn": "日落",
@@ -26,21 +26,21 @@
       "img_href": "/image/cross_section/GFS_北京_20260714_set_2026071318z.jpg/"
     },
     "EC": {
-      "query_id": "3143881",
+      "query_id": "9690472",
       "status": "ok",
       "display_city_name": "北京-海淀区",
       "display_event_name_cn": "日落",
       "display_model": "EC",
       "display_times_name": "凌晨时次",
-      "display_times_str": "2026071212z",
+      "display_times_str": "2026071312z",
       "tb_event_time": "2026-07-14 19:41:39",
-      "tb_quality": "0.081（小烧）",
-      "tb_aod": "0.245（还不错）",
-      "local_quality": 0.081,
-      "local_aod": 0.245,
-      "quality_des": "小烧",
+      "tb_quality": "0.432（中等烧）",
+      "tb_aod": "0.261（还不错）",
+      "local_quality": 0.432,
+      "local_aod": 0.261,
+      "quality_des": "中等烧",
       "aod_des": "还不错",
-      "img_href": "/image/cross_section/EC_北京_20260714_set_2026071212z.jpg/"
+      "img_href": "/image/cross_section/EC_北京_20260714_set_2026071312z.jpg/"
     }
   },
   "weather_context": {
