@@ -25,7 +25,7 @@ jobs:
           python - <<'PY'
           import json
           import random
-          from datetime import datetime
+          from datetime import datetime, timedelta
           from zoneinfo import ZoneInfo
 
           import requests
@@ -41,11 +41,13 @@ jobs:
           now_bjt = datetime.now(ZoneInfo('Asia/Shanghai'))
           event = 'set_2' if now_bjt.hour >= 18 else 'set_1'
           event_label = '明天日落' if event == 'set_2' else '今天日落'
+          target_date = (now_bjt.date() + timedelta(days=1)) if event == 'set_2' else now_bjt.date()
           output = {
               'ok': False,
               'generated_at_bjt': now_bjt.isoformat(timespec='seconds'),
               'event_code': event,
               'event_label': event_label,
+              'target_date': target_date.isoformat(),
               'source': 'sunsetbot.top/detailed/',
           }
 
@@ -114,6 +116,104 @@ jobs:
               output['ok'] = True
           except Exception as exc:
               output['error'] = repr(exc)
+
+          # Independent hourly weather context for photographic assessment.
+          try:
+              forecast_response = requests.get(
+                  'https://api.open-meteo.com/v1/forecast',
+                  params={
+                      'latitude': 39.99,
+                      'longitude': 116.31,
+                      'hourly': ','.join([
+                          'temperature_2m',
+                          'relative_humidity_2m',
+                          'precipitation_probability',
+                          'precipitation',
+                          'weather_code',
+                          'cloud_cover',
+                          'cloud_cover_low',
+                          'cloud_cover_mid',
+                          'cloud_cover_high',
+                          'visibility',
+                          'wind_speed_10m',
+                          'wind_gusts_10m',
+                      ]),
+                      'daily': 'sunset',
+                      'timezone': 'Asia/Shanghai',
+                      'forecast_days': 2,
+                  },
+                  timeout=30,
+              )
+              forecast_response.raise_for_status()
+              forecast = forecast_response.json()
+              hourly = forecast.get('hourly', {})
+              times = hourly.get('time', [])
+              selected = []
+              wanted_prefix = target_date.isoformat()
+              for index, time_value in enumerate(times):
+                  if not time_value.startswith(wanted_prefix):
+                      continue
+                  hour = int(time_value[11:13])
+                  if hour < 15 or hour > 22:
+                      continue
+                  row = {'time': time_value}
+                  for key, values in hourly.items():
+                      if key != 'time' and isinstance(values, list) and index < len(values):
+                          row[key] = values[index]
+                  selected.append(row)
+              daily = forecast.get('daily', {})
+              sunset_value = None
+              if wanted_prefix in daily.get('time', []):
+                  daily_index = daily['time'].index(wanted_prefix)
+                  sunsets = daily.get('sunset', [])
+                  if daily_index < len(sunsets):
+                      sunset_value = sunsets[daily_index]
+              output['weather_context'] = {
+                  'provider': 'Open-Meteo',
+                  'latitude': forecast.get('latitude'),
+                  'longitude': forecast.get('longitude'),
+                  'timezone': forecast.get('timezone'),
+                  'sunset': sunset_value,
+                  'hourly_15_22': selected,
+              }
+          except Exception as exc:
+              output['weather_context_error'] = repr(exc)
+
+          try:
+              air_response = requests.get(
+                  'https://air-quality-api.open-meteo.com/v1/air-quality',
+                  params={
+                      'latitude': 39.99,
+                      'longitude': 116.31,
+                      'hourly': 'pm10,pm2_5,european_aqi',
+                      'timezone': 'Asia/Shanghai',
+                      'forecast_days': 2,
+                  },
+                  timeout=30,
+              )
+              air_response.raise_for_status()
+              air = air_response.json()
+              hourly = air.get('hourly', {})
+              times = hourly.get('time', [])
+              selected = []
+              wanted_prefix = target_date.isoformat()
+              for index, time_value in enumerate(times):
+                  if not time_value.startswith(wanted_prefix):
+                      continue
+                  hour = int(time_value[11:13])
+                  if hour < 15 or hour > 22:
+                      continue
+                  row = {'time': time_value}
+                  for key, values in hourly.items():
+                      if key != 'time' and isinstance(values, list) and index < len(values):
+                          row[key] = values[index]
+                  selected.append(row)
+              output['air_quality_context'] = {
+                  'provider': 'Open-Meteo CAMS',
+                  'hourly_15_22': selected,
+              }
+          except Exception as exc:
+              output['air_quality_context_error'] = repr(exc)
 
           with open('sunsetbot_probe_result.json', 'w', encoding='utf-8') as file:
               json.dump(output, file, ensure_ascii=False, indent=2)
