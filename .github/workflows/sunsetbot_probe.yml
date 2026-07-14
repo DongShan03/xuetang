@@ -5,6 +5,10 @@ on:
     # Beijing time 08:50 and 20:50
     - cron: '50 0,12 * * *'
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/sunsetbot_probe.yml'
+      - 'sunsetbot_probe_trigger.txt'
 
 permissions:
   contents: write
