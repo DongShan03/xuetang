@@ -1,46 +1,46 @@
 {
   "ok": true,
-  "generated_at_bjt": "2026-08-05T23:02:20+08:00",
-  "event_code": "set_2",
-  "event_label": "明天日落",
+  "generated_at_bjt": "2026-08-06T11:54:28+08:00",
+  "event_code": "set_1",
+  "event_label": "今天日落",
   "target_date": "2026-08-06",
   "source": "sunsetbot.top/detailed/",
   "city": "北京-海淀区",
-  "city_lookup_query_id": "9722322",
+  "city_lookup_query_id": "2560112",
   "models": {
     "GFS": {
-      "query_id": "1069779",
+      "query_id": "4199861",
       "status": "ok",
       "display_city_name": "北京-海淀区",
       "display_event_name_cn": "日落",
       "display_model": "GFS",
-      "display_times_name": "傍晚时次",
-      "display_times_str": "2026080506z",
+      "display_times_name": "上午时次",
+      "display_times_str": "2026080518z",
       "tb_event_time": "2026-08-06 19:21:46",
-      "tb_quality": "0.0（不烧）",
-      "tb_aod": "0.672（大污）",
-      "local_quality": 0.0,
-      "local_aod": 0.672,
-      "quality_des": "不烧",
-      "aod_des": "大污",
-      "img_href": "/image/cross_section/GFS_北京_20260806_set_2026080506z.jpg/"
+      "tb_quality": "0.003（微烧）",
+      "tb_aod": "0.609（污）",
+      "local_quality": 0.003,
+      "local_aod": 0.609,
+      "quality_des": "微烧",
+      "aod_des": "污",
+      "img_href": "/image/cross_section/GFS_北京_20260806_set_2026080518z.jpg/"
     },
     "EC": {
-      "query_id": "3936006",
+      "query_id": "309405",
       "status": "ok",
-      "display_city_name": "",
-      "display_event_name_cn": "",
-      "display_model": "",
-      "display_times_name": "",
-      "display_times_str": "",
-      "tb_event_time": "-",
-      "tb_quality": "-",
-      "tb_aod": "-",
-      "local_quality": "",
-      "local_aod": "",
-      "quality_des": "-",
-      "aod_des": "-",
-      "img_href": "http://www.sunsetbot.top/static/media/static_image/default_rise.jpg"
+      "display_city_name": "北京-海淀区",
+      "display_event_name_cn": "日落",
+      "display_model": "EC",
+      "display_times_name": "凌晨时次",
+      "display_times_str": "2026080512z",
+      "tb_event_time": "2026-08-06 19:21:46",
+      "tb_quality": "0.0（不烧）",
+      "tb_aod": "0.535（小污）",
+      "local_quality": 0.0,
+      "local_aod": 0.535,
+      "quality_des": "不烧",
+      "aod_des": "小污",
+      "img_href": "/image/cross_section/EC_北京_20260806_set_2026080512z.jpg/"
     }
   },
   "weather_context": {
@@ -52,68 +52,68 @@
     "hourly_15_22": [
       {
         "time": "2026-08-06T15:00",
-        "temperature_2m": 37.2,
-        "relative_humidity_2m": 35,
-        "precipitation_probability": 5,
+        "temperature_2m": 35.5,
+        "relative_humidity_2m": 50,
+        "precipitation_probability": 7,
         "precipitation": 0.0,
         "weather_code": 1,
-        "cloud_cover": 34,
-        "cloud_cover_low": 0,
-        "cloud_cover_mid": 2,
-        "cloud_cover_high": 32,
-        "visibility": 15160.0,
-        "wind_speed_10m": 4.4,
-        "wind_gusts_10m": 16.9
+        "cloud_cover": 25,
+        "cloud_cover_low": 1,
+        "cloud_cover_mid": 8,
+        "cloud_cover_high": 19,
+        "visibility": 13480.0,
+        "wind_speed_10m": 4.0,
+        "wind_gusts_10m": 20.5
       },
       {
         "time": "2026-08-06T16:00",
-        "temperature_2m": 37.4,
-        "relative_humidity_2m": 33,
-        "precipitation_probability": 9,
+        "temperature_2m": 35.4,
+        "relative_humidity_2m": 48,
+        "precipitation_probability": 10,
         "precipitation": 0.0,
-        "weather_code": 0,
-        "cloud_cover": 12,
+        "weather_code": 1,
+        "cloud_cover": 20,
         "cloud_cover_low": 0,
-        "cloud_cover_mid": 2,
-        "cloud_cover_high": 9,
-        "visibility": 15160.0,
-        "wind_speed_10m": 5.1,
-        "wind_gusts_10m": 17.6
+        "cloud_cover_mid": 14,
+        "cloud_cover_high": 6,
+        "visibility": 13060.0,
+        "wind_speed_10m": 4.0,
+        "wind_gusts_10m": 15.8
       },
       {
         "time": "2026-08-06T17:00",
-        "temperature_2m": 36.6,
-        "relative_humidity_2m": 38,
+        "temperature_2m": 35.2,
+        "relative_humidity_2m": 48,
         "precipitation_probability": 12,
         "precipitation": 0.0,
         "weather_code": 0,
-        "cloud_cover": 4,
-        "cloud_cover_low": 0,
-        "cloud_cover_mid": 2,
+        "cloud_cover": 14,
+        "cloud_cover_low": 2,
+        "cloud_cover_mid": 12,
         "cloud_cover_high": 2,
-        "visibility": 15160.0,
-        "wind_speed_10m": 7.2,
-        "wind_gusts_10m": 19.8
+        "visibility": 13480.0,
+        "wind_speed_10m": 3.1,
+        "wind_gusts_10m": 14.4
       },
       {
         "time": "2026-08-06T18:00",
-        "temperature_2m": 34.7,
+        "temperature_2m": 34.6,
         "relative_humidity_2m": 51,
         "precipitation_probability": 12,
         "precipitation": 0.0,
         "weather_code": 0,
-        "cloud_cover": 4,
-        "cloud_cover_low": 0,
-        "cloud_cover_mid": 3,
-        "cloud_cover_high": 1,
-        "visibility": 11520.0,
-        "wind_speed_10m": 11.4,
-        "wind_gusts_10m": 26.6
+        "cloud_cover": 16,
+        "cloud_cover_low": 1,
+        "cloud_cover_mid": 5,
+        "cloud_cover_high": 11,
+        "visibility": 13480.0,
+        "wind_speed_10m": 5.0,
+        "wind_gusts_10m": 12.2
       },
       {
         "time": "2026-08-06T19:00",
-        "temperature_2m": 32.7,
-        "relative_humidity_2m": 60,
+        "temperature_2m": 32.9,
+        "relative_humidity_2m": 62,
         "precipitation_probability": 10,
         "precipitation": 0.0,
         "weather_code": 0,
@@ -121,54 +121,54 @@
         "cloud_cover_low": 0,
         "cloud_cover_mid": 2,
         "cloud_cover_high": 2,
-        "visibility": 11520.0,
-        "wind_speed_10m": 10.6,
-        "wind_gusts_10m": 27.4
+        "visibility": 10360.0,
+        "wind_speed_10m": 6.9,
+        "wind_gusts_10m": 13.3
       },
       {
         "time": "2026-08-06T20:00",
         "temperature_2m": 31.5,
-        "relative_humidity_2m": 64,
+        "relative_humidity_2m": 70,
         "precipitation_probability": 8,
         "precipitation": 0.0,
         "weather_code": 0,
-        "cloud_cover": 1,
+        "cloud_cover": 2,
         "cloud_cover_low": 0,
-        "cloud_cover_mid": 1,
-        "cloud_cover_high": 0,
+        "cloud_cover_mid": 2,
+        "cloud_cover_high": 1,
         "visibility": 10360.0,
-        "wind_speed_10m": 8.1,
-        "wind_gusts_10m": 20.5
+        "wind_speed_10m": 6.1,
+        "wind_gusts_10m": 13.3
       },
       {
         "time": "2026-08-06T21:00",
-        "temperature_2m": 30.9,
-        "relative_humidity_2m": 68,
+        "temperature_2m": 30.7,
+        "relative_humidity_2m": 74,
         "precipitation_probability": 5,
         "precipitation": 0.0,
         "weather_code": 0,
-        "cloud_cover": 1,
+        "cloud_cover": 3,
         "cloud_cover_low": 0,
-        "cloud_cover_mid": 1,
+        "cloud_cover_mid": 3,
         "cloud_cover_high": 0,
-        "visibility": 10360.0,
-        "wind_speed_10m": 5.5,
-        "wind_gusts_10m": 15.5
+        "visibility": 9200.0,
+        "wind_speed_10m": 4.2,
+        "wind_gusts_10m": 11.5
       },
       {
         "time": "2026-08-06T22:00",
-        "temperature_2m": 30.2,
-        "relative_humidity_2m": 74,
+        "temperature_2m": 29.9,
+        "relative_humidity_2m": 80,
         "precipitation_probability": 2,
         "precipitation": 0.0,
         "weather_code": 0,
-        "cloud_cover": 1,
+        "cloud_cover": 2,
         "cloud_cover_low": 0,
-        "cloud_cover_mid": 1,
+        "cloud_cover_mid": 2,
         "cloud_cover_high": 0,
         "visibility": 9180.0,
-        "wind_speed_10m": 4.0,
-        "wind_gusts_10m": 10.4
+        "wind_speed_10m": 2.9,
+        "wind_gusts_10m": 8.3
       }
     ]
   },
@@ -177,50 +177,50 @@
     "hourly_15_22": [
       {
         "time": "2026-08-06T15:00",
-        "pm10": 45.8,
-        "pm2_5": 45.2,
-        "european_aqi": 91
+        "pm10": 39.2,
+        "pm2_5": 38.9,
+        "european_aqi": 92
       },
       {
         "time": "2026-08-06T16:00",
-        "pm10": 45.1,
-        "pm2_5": 44.5,
-        "european_aqi": 92
+        "pm10": 39.9,
+        "pm2_5": 39.6,
+        "european_aqi": 93
       },
       {
         "time": "2026-08-06T17:00",
-        "pm10": 45.8,
-        "pm2_5": 45.1,
-        "european_aqi": 92
+        "pm10": 41.2,
+        "pm2_5": 40.9,
+        "european_aqi": 93
       },
       {
         "time": "2026-08-06T18:00",
-        "pm10": 51.1,
-        "pm2_5": 50.5,
-        "european_aqi": 92
+        "pm10": 46.9,
+        "pm2_5": 46.4,
+        "european_aqi": 93
       },
       {
         "time": "2026-08-06T19:00",
-        "pm10": 57.5,
-        "pm2_5": 56.9,
-        "european_aqi": 93
+        "pm10": 53.1,
+        "pm2_5": 52.7,
+        "european_aqi": 94
       },
       {
         "time": "2026-08-06T20:00",
-        "pm10": 68.0,
-        "pm2_5": 67.5,
-        "european_aqi": 93
+        "pm10": 63.6,
+        "pm2_5": 63.3,
+        "european_aqi": 94
       },
       {
         "time": "2026-08-06T21:00",
-        "pm10": 82.9,
-        "pm2_5": 82.4,
+        "pm10": 80.6,
+        "pm2_5": 80.3,
         "european_aqi": 94
       },
       {
         "time": "2026-08-06T22:00",
-        "pm10": 96.2,
-        "pm2_5": 95.9,
+        "pm10": 96.9,
+        "pm2_5": 96.6,
         "european_aqi": 94
       }
     ]
